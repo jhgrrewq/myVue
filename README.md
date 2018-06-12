@@ -505,7 +505,7 @@ Compiler.prototype = {
 		// 初始化 Watcher 
 		// 绑定 数据属性 和对应更新回调
 		new Watcher(this.vm, exp, val => {
-			this.updateText(node, expTextContent, exp)
+			this.updateText(node, expTextContent, this.vm[exp])
 		})
 	},
 	// 处理 v-model 属性节点
@@ -531,13 +531,13 @@ Compiler.prototype = {
 		cb && node.addEventListener(event, cb.bind(vm), false)
 	},
 	// 更新 model
-	updateModel: function(node, value) {
+	updateModel: function(node, val) {
 		node.value = typeof val === 'undefined' ? '' : val
 	},
 	// 更新 text
 	updateText: function(node, expTextContent, val) {
-		let value = typeof val === 'undefined' ? '' : val
-		node.textContent = expTextContent.replace(/\{\{([^\}]+)\}\}/, value)
+		val = typeof val === 'undefined' ? '' : val
+		node.textContent = expTextContent.replace(/\{\{([^\}]+)\}\}/, val)
 	},
 	// 判断是否是元素结点
 	isElementNode: function(node) {
